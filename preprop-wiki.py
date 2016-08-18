@@ -2,6 +2,7 @@
 
 import sys
 import re
+import argparse
 
 def remove_brackets(sentences, delimiter=" "):
 
@@ -25,8 +26,14 @@ def split_line(line, delimiter):
 
 def main():
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--vocab-limit", type=int, dest="vocab_limit", default=0, help="vocabulary limit to filterout")
+    args = parser.parse_args()
+
     delimiter = "。"
 
+    dic = {}
+    sentences = []
     # 標準入力を一行ずつ読み込み
     for line in sys.stdin:
 
@@ -35,7 +42,26 @@ def main():
 
         for a in a_sentences:
             if len(a) > 40 and len(a) < 800:
-                print a
+                for w in a.split():
+                    dic[w] = dic.get(w, 0) + 1
+
+                sentences.append(a.split())
+
+    vocab_dict = {}
+    for sen in sentences:
+        print " ".join([w if dic[w] > args.vocab_limit else "<unk>" for w in sen])
+
+        for w in sen:
+            if dic[w] > args.vocab_limit:
+                vocab_dict[w] = vocab_dict.get(w, 0) + 1
+            else:
+                vocab_dict["<unk>"] = vocab_dict.get("<unk>", 0) + 1
+
+    print len(dic)
+    print len(vocab_dict)
+
+
+
 
 if __name__ == '__main__':
     main()
