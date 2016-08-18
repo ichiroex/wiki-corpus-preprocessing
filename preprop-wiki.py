@@ -49,17 +49,16 @@ def main():
     with open("sentences.tmp", "r") as f:
         vocab_dict = {}
         for sen in f:
-            print " ".join([w if dic[w] > args.vocab_limit else "<unk>" for w in sen.strip().split()])
-
-            """
+            #print " ".join([w if dic[w] > args.vocab_limit else "<unk>" for w in sen.strip().split()])
+            
             for w in sen.strip().split():
                 if dic[w] > args.vocab_limit:
                     vocab_dict[w] = vocab_dict.get(w, 0) + 1
                 else:
                     vocab_dict["<unk>"] = vocab_dict.get("<unk>", 0) + 1
-            """
-    #print len(dic)
-    #print len(vocab_dict)
+
+    print len(dic)
+    print len(vocab_dict)
 
 
 
