@@ -33,29 +33,29 @@ def main():
     delimiter = "。"
 
     dic = {}
-    sentences = []
-    # 標準入力を一行ずつ読み込み
-    for line in sys.stdin:
+    with open("sentences.tmp", "w") as f:
+        # 標準入力を一行ずつ読み込み
+        for line in sys.stdin:
 
-        b_sentences = split_line(line, delimiter) # before
-        a_sentences = remove_brackets(b_sentences, delimiter=delimiter) # after
+            b_sentences = split_line(line, delimiter) # before
+            a_sentences = remove_brackets(b_sentences, delimiter=delimiter) # after
 
-        for a in a_sentences:
-            if len(a) > 40 and len(a) < 800:
-                for w in a.split():
-                    dic[w] = dic.get(w, 0) + 1
+            for a in a_sentences:
+                if len(a) > 40 and len(a) < 800:
+                    for w in a.split():
+                        dic[w] = dic.get(w, 0) + 1
+                    f.write(a + "\n")
 
-                sentences.append(a.split())
-
-    vocab_dict = {}
-    for sen in sentences:
-        #print " ".join([w if dic[w] > args.vocab_limit else "<unk>" for w in sen])
-
-        for w in sen:
-            if dic[w] > args.vocab_limit:
-                vocab_dict[w] = vocab_dict.get(w, 0) + 1
-            else:
-                vocab_dict["<unk>"] = vocab_dict.get("<unk>", 0) + 1
+    with open("sentences.tmp", "r") as f:
+        vocab_dict = {}
+        for sen in f:
+            #print " ".join([w if dic[w] > args.vocab_limit else "<unk>" for w in sen.strip().split()])
+            
+            for w in sen.strip().split():
+                if dic[w] > args.vocab_limit:
+                    vocab_dict[w] = vocab_dict.get(w, 0) + 1
+                else:
+                    vocab_dict["<unk>"] = vocab_dict.get("<unk>", 0) + 1
 
     print len(dic)
     print len(vocab_dict)
