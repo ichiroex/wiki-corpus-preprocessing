@@ -15,6 +15,14 @@ def remove_brackets(sentences, delimiter=" "):
 
     return sentences_without_brackets
 
+def split_line(line, delimiter):
+    pattern = r"「.+?」"
+    for m in re.findall(pattern, line):
+        tmp_m = m.replace(delimiter, "")
+        line = line.replace(m, tmp_m)
+
+    return line.split(delimiter)[:-1]
+
 def main():
 
     delimiter = "。"
@@ -22,7 +30,7 @@ def main():
     # 標準入力を一行ずつ読み込み
     for line in sys.stdin:
 
-        b_sentences = line.split(delimiter)[:-1] # before
+        b_sentences = split_line(line, delimiter) # before
         a_sentences = remove_brackets(b_sentences, delimiter=delimiter) # after
 
         for a in a_sentences:
