@@ -28,7 +28,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--vocab-limit", type=int, dest="vocab_limit", default=0, help="vocabulary limit to filterout")
-    parser.add_argument("--word-limit", type=int, dest="word_limit", default=1000000000, help="word limit")
+    parser.add_argument("--word-limit", type=int, dest="word_limit", default=100000000, help="word limit")
     args = parser.parse_args()
 
     delimiter = "。"
@@ -53,6 +53,7 @@ def main():
             if num_words_count > args.word_limit:
                 break
 
+
     vocab_dict = {}
     with open("sentences.tmp", "r") as f:
         for sen in f:
@@ -65,8 +66,9 @@ def main():
                     vocab_dict["<unk>"] = vocab_dict.get("<unk>", 0) + 1
             """
 
-    #print len(dic)
-    #print len(vocab_dict)
+    #print "# of words:", num_words_count
+    #print "# of vocab:", len(dic)
+    #print "# of vocab(reduced):", len(vocab_dict)
 
 if __name__ == '__main__':
     main()
