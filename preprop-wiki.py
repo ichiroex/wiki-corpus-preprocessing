@@ -28,11 +28,13 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--vocab-limit", type=int, dest="vocab_limit", default=0, help="vocabulary limit to filterout")
+    parser.add_argument("--word-limit", type=int, dest="word_limit", default=1000000000, help="word limit")
     args = parser.parse_args()
 
     delimiter = "。"
 
     dic = {}
+    num_words_count = 0 
     with open("sentences.tmp", "w") as f:
         # 標準入力を一行ずつ読み込み
         for line in sys.stdin:
@@ -42,26 +44,29 @@ def main():
 
             for a in a_sentences:
                 if len(a) > 40 and len(a) < 800:
-                    for w in a.split():
+                    words = a.split():
+                    num_words_count += len(words) # 単語数をカウント
+                    for w in words:
                         dic[w] = dic.get(w, 0) + 1
                     f.write(a + "\n")
 
+            if num_words_count > args.word_limit:
+                break
+
+    vocab_dict = {}
     with open("sentences.tmp", "r") as f:
-        vocab_dict = {}
         for sen in f:
-            #print " ".join([w if dic[w] > args.vocab_limit else "<unk>" for w in sen.strip().split()])
-            
+            print " ".join([w if dic[w] > args.vocab_limit else "<unk>" for w in sen.strip().split()])
+            """
             for w in sen.strip().split():
                 if dic[w] > args.vocab_limit:
                     vocab_dict[w] = vocab_dict.get(w, 0) + 1
                 else:
                     vocab_dict["<unk>"] = vocab_dict.get("<unk>", 0) + 1
+            """
 
-    print len(dic)
-    print len(vocab_dict)
-
-
-
+    #print len(dic)
+    #print len(vocab_dict)
 
 if __name__ == '__main__':
     main()
