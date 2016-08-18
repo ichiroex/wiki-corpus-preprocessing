@@ -44,7 +44,7 @@ def main():
 
             for a in a_sentences:
                 if len(a) > 40 and len(a) < 800:
-                    words = a.split():
+                    words = a.split()
                     num_words_count += len(words) # 単語数をカウント
                     for w in words:
                         dic[w] = dic.get(w, 0) + 1
