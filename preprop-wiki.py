@@ -49,7 +49,7 @@ def main():
 
     vocab_dict = {}
     for sen in sentences:
-        print " ".join([w if dic[w] > args.vocab_limit else "<unk>" for w in sen])
+        #print " ".join([w if dic[w] > args.vocab_limit else "<unk>" for w in sen])
 
         for w in sen:
             if dic[w] > args.vocab_limit:
